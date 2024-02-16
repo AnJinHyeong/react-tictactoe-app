@@ -4,23 +4,23 @@ import './Board.css'
 
 const Board = () => {
 
-  const [player, setPlyser] = useState(true)
-  const [squares, setSquares] = useState(Array(9).fill(null))
+  const [player, setPlyser] = useState<Boolean>(true)
+  const [squares, setSquares] = useState<string[]>(Array(9).fill(null))
 
 
-  const renderSquare = (i) => {
+  const renderSquare = (i:number) => {
     return <Square value={squares[i]} onClick={() => handleClickSquare(i)} />
   }
   
-  const handleClickSquare = (i) => {
-    if(calculateWinner(squares) || squares[i]) return
+  const handleClickSquare = (i:number) => {
+    if(calculateWinner(squares as []) || squares[i]) return
     const newSquares = [...squares]
     newSquares[i] = player ? 'O' : 'X'
     setSquares(newSquares)
     setPlyser(prev=>!prev)
   }
 
-  const calculateWinner = (squares) => {
+  const calculateWinner = (squares:[]) => {
     const lines = [
       [0,1,2],
       [3,4,5],
@@ -41,7 +41,7 @@ const Board = () => {
     return null
   }
 
-  const winner = calculateWinner(squares)
+  const winner = calculateWinner(squares as [])
   let status
   if(winner) {
     status = `Winner: ${winner}`
