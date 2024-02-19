@@ -1,21 +1,26 @@
-import { useState } from 'react';
-import './App.css'
+import { useEffect, useMemo, useState } from 'react';
 import Board from './components/Board';
-import History from './components/History';
+
+import './App.css'
 
 function App() {
 
-  const [player, setPlyser] = useState(true)
+  const [player, setPlayer] = useState(true)
   const [squares, setSquares] = useState(Array(9).fill(null))
   const [history, setHistory] = useState([])
+  const [winner, setWinner] = useState(null)
+
+  useEffect(() => {
+    setWinner(calculateWinner(squares))
+  }, [squares])
 
   const handleClickSquare = (i) => {
     if(calculateWinner(squares) || squares[i]) return
     const newSquares = [...squares]
     newSquares[i] = player ? 'O' : 'X'
-    setSquares(newSquares)
     setHistory([...history, newSquares])
-    setPlyser(prev=>!prev)
+    setSquares(newSquares)
+    setPlayer(prev=>!prev)
   }
 
   const calculateWinner = (squares) => {
@@ -35,21 +40,35 @@ function App() {
         return squares[a]
       }
     }
-
     return null
   }
 
-  const current = history[history.length - 1]
-  const winner = calculateWinner(squares)
   let status
   if(winner) {
     status = `Winner: ${winner}`
+  } else if(winner === 'draw'){
+    status = `Game Draw!!`
   } else {
     status = `Next Player: ${player ? 'O' : 'X'}`
   }
-
-  console.log(history)
   
+  const historyDiv = history.map((it, index) => {
+    return <li className='btn' key={index} onClick={() => jumpTo(index)}>GAME HISTORY #{index}</li>
+  })
+
+  const jumpTo = (step) => {
+    setPlayer(!((step % 2) === 0))
+    setSquares(history[step])
+    setHistory(history.slice(0, step + 1))
+  }
+
+  const resetGame = () => {
+    setHistory([])
+    setPlayer(true)
+    setWinner(null)
+    setSquares(Array(9).fill(null))
+  }
+
   return (
     <div className="game">
       <div className="game-board">
@@ -57,7 +76,14 @@ function App() {
       </div>
       <div className="game-info">
         <div className='status'>{status}</div>
-        <History history={history}/>
+        {
+          winner ? 
+            <button className='btn reset' onClick={() => resetGame()}>Reset Game</button>
+            :
+            <ul>
+              {historyDiv}
+            </ul>
+        }
       </div>
     </div>
   );

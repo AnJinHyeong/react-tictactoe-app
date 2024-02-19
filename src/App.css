@@ -15,3 +15,28 @@
   text-align: center;
   margin: 15px auto;
 }
+.btn{
+  background-color: #333;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 5px;
+  width: 250px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: none;
+}
+.btn:hover{
+  background-color: #444;
+}
+.reset{
+  
+}
+
+ul{
+  list-style: none;
+  max-height: 100px;
+  overflow: scroll;;
+}
+ul > li{
+  
+}
