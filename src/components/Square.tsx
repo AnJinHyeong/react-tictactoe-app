@@ -7,11 +7,11 @@ type Props = {
   onClick: () => void
 }
 
-const Square = (props: Props) => {
+const Square = ({value, onClick}: Props) => {
 
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
+    <button className="square" onClick={onClick}>
+      {value}
     </button>
   )
 }
